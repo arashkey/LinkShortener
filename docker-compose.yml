@@ -1,0 +1,26 @@
+version: '3.4'
+
+services:
+  mongo:
+    container_name: mongodb_linkshortener
+    image: mongodb/mongodb-community-server
+    restart: always
+    networks:
+        - linkshortener_net
+    #environment:
+    #  MONGO_INITDB_ROOT_USERNAME: root
+    #  MONGO_INITDB_ROOT_PASSWORD: example
+  linkshortener:
+    container_name: web_linkshortener
+    image: ${DOCKER_REGISTRY-}linkshortener
+    ports:
+        - 8080:5000
+        - 443:5001
+    networks:
+        - linkshortener_net
+    build:
+      context: .
+      dockerfile: LinkShortener/Dockerfile
+
+networks:
+  linkshortener_net:
